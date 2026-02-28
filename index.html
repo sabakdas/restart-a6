@@ -43,7 +43,7 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 text-gray-400 font-semibold">
       <li><a class=" hover:text-blue-600">Home</a></li>
-      <li><a class=" hover:text-blue-600">Product</a></li>
+      <li><a class=" hover:text-blue-600" onclick="loadAllProducts()">Product</a></li>
       <li><a class=" hover:text-blue-600">About</a></li>
       <li><a class=" hover:text-blue-600">Contact</a></li>    
     </ul>
@@ -112,9 +112,11 @@
             <div id="category-container" class="flex justify-center gap-5 flex-wrap"></div>
          </section>
          <!-- products by category -->
-         <section id="product-container" class=" w-9/12 mx-auto my-10 grid grid-cols-3 gap-5">
-      
-      </section>
+         <section class="w-9/12 mx-auto ">
+            <div id="product-container" class=" grid grid-cols-1 md:grid-cols-4 my-10  gap-10">
+
+            </div>
+        </section>
 
 
     </main>

@@ -5,11 +5,25 @@ const loadCategories =()=>{
     .then(data => displayCategories(data));
 };
 
+const removeActive = () =>{
+    const categoryButtons = document.querySelectorAll(".category-btn");
+    // console.log(categoryButtons);
+    categoryButtons.forEach(btn => btn.classList.remove("active"));
+};
+
+
 const loadProductsByCategory = (category)=>{
     const url = `https://fakestoreapi.com/products/category/${category}`
     fetch(url)
     .then(res => res.json())
-    .then(data => displayProductsByCategories(data));
+    .then(data => {
+        removeActive();
+    
+        const clickBtn = document.getElementById(`category-btn-${category}`);
+        // console.log(clickBtn);
+        clickBtn.classList.add("active");
+        displayProductsByCategories(data);
+    });
 
 };
 
@@ -17,7 +31,12 @@ const loadAllProducts=()=>{
     const url = `https://fakestoreapi.com/products`
     fetch(url)
     .then(res => res.json())
-    .then(data=>displayAllProducts(data));
+    .then(data=>{
+        removeActive();
+        const allBtn = document.getElementById("all-button");
+        allBtn.classList.add("active");
+        displayAllProducts(data);
+    });
 
 };
 
@@ -27,16 +46,16 @@ const displayAllProducts=(allProducts)=>{
     productContainer.innerHTML="";
     allProducts.forEach(allProduct=>{
         const card = document.createElement("div");
-        card.innerHTML=` <div class="card bg-base-100 w-72 shadow-sm">
-  <figure class="bg-slate-100">
+        card.innerHTML=` <div class="shadow-sm">
+  <figure class="bg-slate-100 flex justify-center">
     <img
       src="${allProduct.image}"
       alt="Shoes" class="h-48 object-cover py-5" />
   </figure>
-  <div class="card-body" >
+  <div  class="card-body">
 
     <div class="flex justify-between">
-        <h2 class="card-title">
+        <h2 class="card-title line-clamp-1">
       ${allProduct.category}</h2>
       <div class="flex gap-1">
          <span><i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></span>
@@ -67,16 +86,16 @@ const displayProductsByCategories = (products)=>{
     products.forEach(product => {
         console.log(product);
         const card = document.createElement("div");
-        card.innerHTML=` <div class="card bg-base-100 w-72 shadow-sm">
-  <figure class="bg-slate-100">
+        card.innerHTML=` <div class=" bg-base-100 shadow-sm">
+  <figure class="bg-slate-100 flex justify-center">
     <img
       src="${product.image}"
-      alt="Shoes" class="h-48 object-cover py-5" />
+      alt="Shoes" class="h-48 object-cover py-5 " />
   </figure>
   <div class="card-body" >
 
     <div class="flex justify-between">
-        <h2 class="card-title">
+        <h2 class="card-title line-clamp-1">
       ${product.category}</h2>
       <div class="flex gap-1">
          <span><i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></span>
@@ -106,17 +125,23 @@ const displayCategories =(categories)=>{
    const categoryContainer = document.getElementById("category-container");
    categoryContainer.innerHTML="";
    const allDiv = document.createElement("div");
-   allDiv.innerHTML=`<button class="btn text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">All</button>`;
+   allDiv.innerHTML=`<button id="all-button" class="btn category-btn text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">All</button>`;
    allDiv.addEventListener("click", () => loadAllProducts());
    categoryContainer.append(allDiv);
    for(let category of categories){
+    
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML=`
-    <button  class="btn  text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">${category}</button>
+    <button id="category-btn-${category}"  class="btn category-btn  text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">${category}</button>
     `;
     btnDiv.addEventListener("click", () => loadProductsByCategory(category));
     categoryContainer.append(btnDiv);
    }
-}
+};
 
 loadCategories();
+
+
+
+
+
