@@ -2,7 +2,10 @@
 const loadCategories =()=>{
     fetch("https://fakestoreapi.com/products/categories")
     .then(res =>res.json())
-    .then(data => displayCategories(data));
+    .then(data => {
+        
+        displayCategories(data)
+    });
 };
 
 const removeActive = () =>{
@@ -18,7 +21,6 @@ const loadProductsByCategory = (category)=>{
     .then(res => res.json())
     .then(data => {
         removeActive();
-    
         const clickBtn = document.getElementById(`category-btn-${category}`);
         // console.log(clickBtn);
         clickBtn.classList.add("active");
@@ -42,6 +44,7 @@ const loadAllProducts=()=>{
 
 
 const displayAllProducts=(allProducts)=>{
+
     const productContainer = document.getElementById("product-container");
     productContainer.innerHTML="";
     allProducts.forEach(allProduct=>{
@@ -121,17 +124,21 @@ const displayProductsByCategories = (products)=>{
 
 
 
+
 const displayCategories =(categories)=>{
+   
    const categoryContainer = document.getElementById("category-container");
    categoryContainer.innerHTML="";
    const allDiv = document.createElement("div");
-   allDiv.innerHTML=`<button id="all-button" class="btn category-btn text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">All</button>`;
+   allDiv.innerHTML=`
+   <button id="all-button" class="btn category-btn text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">All</button>`;
    allDiv.addEventListener("click", () => loadAllProducts());
    categoryContainer.append(allDiv);
    for(let category of categories){
     
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML=`
+    
     <button id="category-btn-${category}"  class="btn category-btn  text-black hover:text-white border-gray-400 rounded-4xl btn-outline btn-primary">${category}</button>
     `;
     btnDiv.addEventListener("click", () => loadProductsByCategory(category));
@@ -139,7 +146,64 @@ const displayCategories =(categories)=>{
    }
 };
 
+
+const loadTrendingProducts = () => 
+      fetch("https://fakestoreapi.com/products")
+        .then(res => res.json())
+        .then(data => 
+         { const trending=data
+            .sort((a, b) => (b.rating.rate * b.rating.count) - (a.rating.rate * a.rating.count))
+            .slice(0, 3)
+
+            displayTrendingProducts(trending)}
+        );
+
+        const displayTrendingProducts = (products) => {
+        const container = document.getElementById("trending-container");
+        container.innerHTML ="";
+
+         products.forEach(product =>{
+            const card = document.createElement("div");
+            card.innerHTML= `
+           <div class=" bg-base-100 shadow-sm">
+  <figure class="bg-slate-100 flex justify-center">
+    <img
+      src="${product.image}"
+      alt="Shoes" class="h-48 object-cover py-5 " />
+  </figure>
+  <div class="card-body" >
+
+    <div class="flex justify-between">
+        <h2 class="card-title line-clamp-1">
+      ${product.category}</h2>
+      <div class="flex gap-1">
+         <span><i class="fa-solid fa-star" style="color: rgb(255, 212, 59);"></i></span>
+         <p>${product.rating.rate}</p>
+         <p>(${product.rating.count})</p>
+      </div>
+     
+    </div>
+    
+    <p class="text-ellipsis line-clamp-1 ">${product.title}</p>
+    <h1 class="font-semibold text-2xl"><span>$<span>${product.price}</h1>
+
+    <div class="card-actions justify-between">
+      
+      <button  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
+      <button  class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i>Add</button>
+    </div>
+  </div>
+</div>
+        `;
+        container.append(card);
+         }
+        ).join('');
+     };
+
+   
+loadTrendingProducts();
 loadCategories();
+
 
 
 

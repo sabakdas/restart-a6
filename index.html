@@ -43,7 +43,7 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 text-gray-400 font-semibold">
       <li><a class=" hover:text-blue-600">Home</a></li>
-      <li><a class=" hover:text-blue-600" onclick="loadAllProducts()">Product</a></li>
+      <li><a class=" hover:text-blue-600">Product</a></li>
       <li><a class=" hover:text-blue-600">About</a></li>
       <li><a class=" hover:text-blue-600">Contact</a></li>    
     </ul>
@@ -105,22 +105,28 @@
                 </div>
             </div>
         </section>
-
+         <!-- tranding now section -->
+          <section class="w-9/12 mx-auto">
+            <h1 class="text-2xl font-bold text-black text-left mt-10 mb-5">Treanding Now</h1>
+            <div id="trending-container" class=" grid grid-cols-1 md:grid-cols-3 my-10  gap-10"></div>
+          </section>
         <!-- our product section -->
-         <section class="w-9/12 mx-auto">
-            <h1 class="text-2xl font-bold text-black text-center mt-10 mb-5">Our Product</h1>
+         <section id="our-products" class="w-9/12 mx-auto">
+           <h1 class="text-2xl font-bold text-black text-center mb-5 ">Our Product</h1>
             <div id="category-container" class="flex justify-center gap-5 flex-wrap"></div>
          </section>
+        
          <!-- products by category -->
          <section class="w-9/12 mx-auto ">
             <div id="product-container" class=" grid grid-cols-1 md:grid-cols-4 my-10  gap-10">
 
             </div>
         </section>
-
+        
 
     </main>
    
     <script src="./script/index.js"></script>
 </body>
 </html>
+
