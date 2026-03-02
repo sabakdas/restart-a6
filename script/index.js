@@ -30,6 +30,7 @@ const loadProductsByCategory = (category)=>{
 };
 
 const loadAllProducts=()=>{
+    
     const url = `https://fakestoreapi.com/products`
     fetch(url)
     .then(res => res.json())
@@ -39,7 +40,7 @@ const loadAllProducts=()=>{
         allBtn.classList.add("active");
         displayAllProducts(data);
     });
-
+    
 };
 
 
@@ -73,13 +74,14 @@ const displayAllProducts=(allProducts)=>{
 
     <div class="card-actions justify-between">
       
-      <button  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
+      <button onclick="loadCardDetail(${allProduct.id})"  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
       <button  class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i>Add</button>
     </div>
   </div>
 </div>`;
         productContainer.append(card);
     });
+   
 };
 
 
@@ -113,7 +115,7 @@ const displayProductsByCategories = (products)=>{
 
     <div class="card-actions justify-between">
       
-      <button  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
+      <button onclick="loadCardDetail(${product.id})"  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
       <button  class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i>Add</button>
     </div>
   </div>
@@ -145,6 +147,34 @@ const displayCategories =(categories)=>{
     categoryContainer.append(btnDiv);
    }
 };
+
+const loadCardDetail=async(id)=>{
+    const url=`https://fakestoreapi.com/products/${id}`;
+    console.log(url);
+    const res = await fetch(url);
+    const details=await res.json();
+    displayCardDetails(details);
+};
+
+const displayCardDetails=(card)=>{
+    console.log(card);
+    const detailsBox = document.getElementById("details-container");
+    detailsBox.innerHTML=` <div class=" bg-base-100 shadow-sm">
+  <div class="card-body" >
+        <h2 class="card-title">
+      ${card.title}</h2>
+      <div class="flex gap-1 font-semibold text-2xl">
+         <span><i class="fa-solid  fa-star" style="color: rgb(255, 212, 59);"></i></span>
+         <p>${card.rating.rate}</p> 
+      </div>
+      
+    <p>${card.description}</p>
+    <h1 class="font-semibold text-2xl"><span>$<span>${card.price}</h1>
+      <button  class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i>Add to Cart</button>
+  </div>
+</div>`;
+    document.getElementById("card_Modal").showModal();
+}
 
 
 const loadTrendingProducts = () => 
@@ -189,7 +219,7 @@ const loadTrendingProducts = () =>
 
     <div class="card-actions justify-between">
       
-      <button  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
+      <button onclick="loadCardDetail(${product.id})"  class="btn  text-gray-400 hover:text-white border-gray-400  btn-outline btn-primary shadow-sm"><i class="fa-solid fa-eye"></i>Details</button>
       <button  class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i>Add</button>
     </div>
   </div>
@@ -200,8 +230,21 @@ const loadTrendingProducts = () =>
         ).join('');
      };
 
+
+     /*const menageSpinner = (status)=>{
+        if(status==true){
+            document.getElementById("spinner").classList.remove("hidden");
+            document.getElementById("product-container").classList.add("hidden");
+        }
+        else{
+            document.getElementById("product-container").classList.remove("hidden");
+            document.getElementById("spinner").classList.add("hidden");
+        }
+     };*/
+
    
 loadTrendingProducts();
+loadAllProducts();
 loadCategories();
 
 
